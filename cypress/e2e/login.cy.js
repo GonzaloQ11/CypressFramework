@@ -29,21 +29,19 @@ describe('Login Tests', () => {
     );
   
     it('Password cannot be empty', () => {
-         loginPage.go();
-        expect( loginPage.isLoginPageDisplayed()).toBe(true);
-         loginPage.typeUsername(testdata.user.username);
-         loginPage.clickLoginButton();
-        expect( loginPage.isErrorMessageDisplayed()).toBe(true);
-        expect( loginPage.getErrorMessage()).toBe(testdata.errorMessages.emptyPassword);
+        login.getUserName().type('Admin')
+        login.getLoginButton().click()
+        login.getErrorMessage().should('be.visible')
+        login.getPassword().should('match', '[class*=error]')
       },
     );
   
     it('Invalid credentials', () => {
-         loginPage.go();
-        expect( loginPage.isLoginPageDisplayed()).toBe(true);
-         loginPage.login(testdata.user.username, testdata.user.invalidPassword);
-        expect( loginPage.isErrorMessageDisplayed()).toBe(true);
-        expect( loginPage.getErrorMessage()).toBe(testdata.errorMessages.invalidCredentials);
+      login.getUserName().type('Admin')
+      login.getPassword().type('fakepassword')
+      login.getLoginButton().click()
+      login.getAlertMessage().should('be.visible')
+      login.getAlertMessage().should('have.text', 'Invalid credentials')
       },
     );
   

@@ -14,4 +14,8 @@ export default class LoginPage {
     getErrorMessage() {
         return cy.get('[class*=error-message]')
     }
+
+    getAlertMessage() {
+        return cy.get('[class*=alert-content-text]')
+    }
 }
