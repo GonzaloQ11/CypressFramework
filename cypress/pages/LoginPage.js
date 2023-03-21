@@ -10,4 +10,8 @@ export default class LoginPage {
     getLoginButton() {
         return cy.get('button[class*=login]')
     }
+
+    getErrorMessage() {
+        return cy.get('[class*=error-message]')
+    }
 }

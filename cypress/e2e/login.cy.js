@@ -22,11 +22,9 @@ describe('Login Tests', () => {
     );
   
     it('Username cannot be empty', () => {
-         loginPage.go();
-        expect( loginPage.isLoginPageDisplayed()).toBe(true);
-         loginPage.clickLoginButton();
-        expect( loginPage.isErrorMessageDisplayed()).toBe(true);
-        expect( loginPage.getErrorMessage()).toBe(testdata.errorMessages.emptyUsername);
+        login.getLoginButton().click()
+        login.getErrorMessage().should('be.visible')
+        login.getUserName().should('match', '[class*=error]')
       },
     );
   
