@@ -1,58 +1,60 @@
 import LoginPage from '../pages/LoginPage'
+import DashboardPage from '../pages/DashboardPage';
 
 describe('Login Tests', () => {
-    const login = new LoginPage()
-
+    const loginPage = new LoginPage()
+    const dashboardPage = new DashboardPage()
     beforeEach(() => {
         cy.visit('https://opensource-demo.orangehrmlive.com/')
     });
 
     it('Login page is displayed', () => {
-        login.getUserName().should('be.visible')
-        login.getPassword().should('be.visible')
-        login.getLoginButton().should('be.visible')
+        loginPage.getUserName().should('be.visible')
+        loginPage.getPassword().should('be.visible')
+        loginPage.getLoginButton().should('be.visible')
     });
   
     it('User can login successfully', () => {
-        login.getUserName().type('Admin')
-        login.getPassword().type('admin123')
-        login.getLoginButton().click()
-        cy.get('[class*=orangehrm-dashboard-grid]').should('be.visible')
+        loginPage.getUserName().type('Admin')
+        loginPage.getPassword().type('admin123')
+        loginPage.getLoginButton().click()
+        dashboardPage.getDashboard().should('be.visible')
       },
     );
   
     it('Username cannot be empty', () => {
-        login.getLoginButton().click()
-        login.getErrorMessage().should('be.visible')
-        login.getUserName().should('match', '[class*=error]')
+        loginPage.getLoginButton().click()
+        loginPage.getErrorMessage().should('be.visible')
+        loginPage.getUserName().should('match', '[class*=error]')
       },
     );
   
     it('Password cannot be empty', () => {
-        login.getUserName().type('Admin')
-        login.getLoginButton().click()
-        login.getErrorMessage().should('be.visible')
-        login.getPassword().should('match', '[class*=error]')
+        loginPage.getUserName().type('Admin')
+        loginPage.getLoginButton().click()
+        loginPage.getErrorMessage().should('be.visible')
+        loginPage.getPassword().should('match', '[class*=error]')
       },
     );
   
     it('Invalid credentials', () => {
-      login.getUserName().type('Admin')
-      login.getPassword().type('fakepassword')
-      login.getLoginButton().click()
-      login.getAlertMessage().should('be.visible')
-      login.getAlertMessage().should('have.text', 'Invalid credentials')
+      loginPage.getUserName().type('Admin')
+      loginPage.getPassword().type('fakepassword')
+      loginPage.getLoginButton().click()
+      loginPage.getAlertMessage().should('be.visible')
+      loginPage.getAlertMessage().should('have.text', 'Invalid credentials')
       },
     );
   
     it('User can login after a failed attempt', () => {
-         loginPage.go();
-        expect( loginPage.isLoginPageDisplayed()).toBe(true);
-         loginPage.login(testdata.user.username, testdata.user.invalidPassword);
-        expect( loginPage.isErrorMessageDisplayed()).toBe(true);
-        expect( loginPage.getErrorMessage()).toBe(testdata.errorMessages.invalidCredentials);
-         loginPage.login(testdata.user.username, testdata.user.password);
-        expect( dashboardPage.isDashboardPageDisplayed()).toBe(true);
+      loginPage.getUserName().type('Admin')
+      loginPage.getPassword().type('fakepassword')
+      loginPage.getLoginButton().click()
+      loginPage.getAlertMessage().should('be.visible')
+      loginPage.getUserName().type('Admin')
+      loginPage.getPassword().type('admin123')
+      loginPage.getLoginButton().click()
+      dashboardPage.getDashboard().should('be.visible')
       },
     );
   });
